@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Payment service</title>
+</head>
+<body>
+    <div class="form">
+        <form action="{{ url_for('submit') }}" method="POST">
+            <p><input name="num" type="text" placeholder="Payment amount"></p>
+            <select name="select_value">
+                <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
+                <option value="RUB">RUB</option>
+            </select>
+            <p><textarea name="text_area" placeholder="Product description" id="textarea_info" cols="30" rows="10"></textarea></p>
+            <button>Submit</button>
+        </form>
+    </div>
+</body>
+</html>
