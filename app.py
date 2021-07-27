@@ -1,6 +1,8 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, request
 import sys
 from hashlib import sha256
+import requests
+import json
 
 app = Flask(__name__)
 
@@ -24,24 +26,37 @@ def submit():
 
     if currency == "EUR":
         data = pay_method(amount, get_text_area, values_currency['EUR'])
+        return render_template('EUR.html', data=data)
     elif currency == "USD":
-        data = bill_method()
+        # отлавливать моменты когда api возвращат ошибку
+        data = bill_method(amount, get_text_area, values_currency['USD'], values_currency['RUB'])['data']
+        return render_template('USD.html', data=data)
 
-    return render_template('submit.html', data=data)
 
+def bill_method(amount, text, payer_currency, shop_currency):
+    str_for_sha256 = f"{payer_currency}:{amount}:{shop_currency}:{shop_id}:{shop_order_id}{secret_key}"
 
-def bill_method():
-    pass
+    _hash = sha256(str_for_sha256.encode('utf-8')).hexdigest()
+
+    info = {"description": text, "payer_currency": payer_currency, "shop_amount": amount,
+            "shop_currency": shop_currency, "shop_id": shop_id,
+            "shop_order_id": shop_order_id, "sign": _hash}
+
+    headers = {"Content-Type": "application/json"}
+    info = json.dumps(info)
+
+    response = requests.post('https://core.piastrix.com/bill/create', info, headers=headers)
+
+    return response.json()
 
 
 def pay_method(amount, text, currency):
-    str_for_sha256 = str(amount) + ":" + str(currency) + ":" + \
-                     str(shop_id) + ":" + str(shop_order_id) + str(secret_key)
+    str_for_sha256 = f"{amount}:{currency}:{shop_id}:{shop_order_id}{secret_key}"
 
-    hash = sha256(str_for_sha256.encode('utf-8')).hexdigest()
+    _hash = sha256(str_for_sha256.encode('utf-8')).hexdigest()
 
     data = {"amount": amount, "currency": currency, "shop_id": shop_id,
-            "shop_order_id": shop_order_id, "sign": hash, "description": text}
+            "shop_order_id": shop_order_id, "sign": _hash, "description": text}
 
     return data
 
