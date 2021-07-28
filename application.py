@@ -6,7 +6,7 @@ import json
 import time
 import os
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 shop_id = 5
 secret_key = "SecretKey01"
@@ -17,12 +17,12 @@ values_currency = {"EUR": 978, "USD": 840, "RUB": 643}
 time_start = time.strftime("%d.%m.%y_%H.%M")
 
 
-@app.route('/')
+@application.route('/')
 def index():
     return render_template("index.html")
 
 
-@app.route('/submit', methods=['GET', 'POST'])
+@application.route('/submit', methods=['GET', 'POST'])
 def submit():
     amount = request.form['num']
     get_text_area = request.form['text_area']
@@ -121,6 +121,6 @@ def write_log_file(event):
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         arg_host, arg_port = sys.argv[1].split(':')
-        app.run(host=arg_host, port=arg_port)
+        application.run(host=arg_host, port=arg_port)
     else:
-        app.run()
+        application.run()

@@ -5,17 +5,17 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='method.css') }}">
     <title>Payment service</title>
 </head>
 <body>
-    <h2>Сonfirm the transition to the payment page</h2>
-    <p>{{ data['data']['data']['ac_amount'] }} RUB</p>
-    <p></p>
-    <form method="{{ data['data']['method'] }}" action="{{ data['data']['url'] }}">
+    <form class="form" method="{{ data['data']['method'] }}" action="{{ data['data']['url'] }}">
+        <h2>Сonfirm the transition to the payment page</h2>
+        <p>{{ data['data']['data']['ac_amount'] }} RUB</p>
         {% for key, item in data['data']['data'].items() %}
         <input type="hidden" name="{{ key }}" value="{{ item }}">
         {% endfor %}
-        <input type="submit"/>
+        <input class="button" type="submit"/>
     </form>
 </body>
 </html>

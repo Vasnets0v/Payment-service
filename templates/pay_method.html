@@ -5,10 +5,11 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='method.css') }}">
     <title>Payment service</title>
 </head>
 <body>
-    <form name="Pay" method="post" action="https://pay.piastrix.com/ru/pay" accept-charset="UTF-8">
+    <form class="form" name="Pay" method="post" action="https://pay.piastrix.com/ru/pay" accept-charset="UTF-8">
         <h2>Сonfirm the transition to the payment page</h2>
         <p>{{ data['amount'] }} EUR</p>
         <p>With description: {{ data['description'] }}</p>
@@ -18,7 +19,7 @@
         <input type="hidden" name="sign" value="{{ data['sign'] }}"/>
         <input type="hidden" name="shop_order_id" value="{{ data['shop_order_id'] }}"/>
         <input type="hidden" name="description" value="{{ data['description'] }}"/>
-        <input type="submit"/>
+        <input class="button" type="submit"/>
     </form>
 </body>
 </html>

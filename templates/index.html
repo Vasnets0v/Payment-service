@@ -5,19 +5,26 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Payment service</title>
 </head>
 <body>
     <div class="form">
-        <form action="{{ url_for('submit') }}" method="POST">
+        <form class="decor" action="{{ url_for('submit') }}" method="POST">
+            <div class="form-left-decoration"></div>
+            <div class="form-right-decoration"></div>
+            <div class="circle"></div>
+            <div class="form-inner">
+                <h3>Payment service</h3>
             <p><input name="num" type="text" placeholder="Payment amount"></p>
             <select name="select_value">
                 <option value="EUR">EUR</option>
                 <option value="USD">USD</option>
                 <option value="RUB">RUB</option>
             </select>
-            <p><textarea name="text_area" placeholder="Product description" id="textarea_info" cols="30" rows="10"></textarea></p>
-            <button>Submit</button>
+            <p><textarea name="text_area" placeholder="Product description" id="textarea_info" cols="10" rows="5"></textarea></p>
+            <input type="submit" value="Submit">
+            </div>
         </form>
     </div>
 </body>
