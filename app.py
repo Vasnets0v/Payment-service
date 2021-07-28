@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import sys
 from hashlib import sha256
 import requests
@@ -26,11 +26,39 @@ def submit():
 
     if currency == "EUR":
         data = pay_method(amount, get_text_area, values_currency['EUR'])
-        return render_template('EUR.html', data=data)
+        return render_template('pay_method.html', data=data)
+
     elif currency == "USD":
-        # отлавливать моменты когда api возвращат ошибку
-        data = bill_method(amount, get_text_area, values_currency['USD'], values_currency['RUB'])['data']
-        return render_template('USD.html', data=data)
+        data = bill_method(amount, get_text_area, values_currency['USD'], values_currency['RUB'])
+
+        if data['data'] is None:
+            return render_template('error.html', data=data)
+        else:
+            return redirect(data['data']['url'])
+
+    else:
+        data = invoice_method(amount, values_currency['RUB'], get_text_area)
+
+        if data['data'] is None:
+            return render_template('error.html', data=data)
+        else:
+            return render_template("invoice_method.html", data=data)
+
+
+def invoice_method(amount, currency, text):
+    str_for_sha256 = f"{amount}:{currency}:{pay_way}:{shop_id}:{shop_order_id}{secret_key}"
+
+    _hash = sha256(str_for_sha256.encode('utf-8')).hexdigest()
+
+    info = {"currency": currency, "sign": _hash, "payway": pay_way, "amount": amount,
+            "shop_id": shop_id, "shop_order_id": shop_order_id, "description": text}
+
+    headers = {"Content-Type": "application/json"}
+    info = json.dumps(info)
+
+    response = requests.post('https://core.piastrix.com/invoice/create', info, headers=headers)
+
+    return response.json()
 
 
 def bill_method(amount, text, payer_currency, shop_currency):
