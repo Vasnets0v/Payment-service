@@ -26,3 +26,6 @@ body {
   cursor: pointer;
   margin: 5px;
 }
+a {
+color: pink;
+}
