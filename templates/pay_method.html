@@ -10,6 +10,8 @@
 <body>
     <form name="Pay" method="post" action="https://pay.piastrix.com/ru/pay" accept-charset="UTF-8">
         <h2>Сonfirm the transition to the payment page</h2>
+        <p>{{ data['amount'] }} EUR</p>
+        <p>With description: {{ data['description'] }}</p>
         <input type="hidden" name="amount" value="{{ data['amount'] }}"/>
         <input type="hidden" name="currency" value="{{ data['currency'] }}"/>
         <input type="hidden" name="shop_id" value="{{ data['shop_id'] }}"/>

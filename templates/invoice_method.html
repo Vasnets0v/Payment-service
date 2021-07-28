@@ -8,19 +8,14 @@
     <title>Payment service</title>
 </head>
 <body>
-    {% with message = get_flashed_messages() %}
-    {% if message %}
-    <div class="alert alert-primary" role="alert">
-        {{message[0]}}
-    </div>
-    {% endif %}
-    {% endwith %}
+    <h2>Сonfirm the transition to the payment page</h2>
+    <p>{{ data['data']['data']['ac_amount'] }} RUB</p>
+    <p></p>
     <form method="{{ data['data']['method'] }}" action="{{ data['data']['url'] }}">
         {% for key, item in data['data']['data'].items() %}
-        <input type="text" name="{{ key }}" value="{{ item }}">
+        <input type="hidden" name="{{ key }}" value="{{ item }}">
         {% endfor %}
         <input type="submit"/>
-        {{ data['data']['method'] }}
     </form>
 </body>
 </html>
